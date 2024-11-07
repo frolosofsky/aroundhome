@@ -1,0 +1,20 @@
+services:
+  postgres:
+    image: postgres:14-alpine
+    ports:
+      # use different port if running native postgres on your local
+      - 5432:5432
+    environment:
+      - POSTGRES_PASSWORD=pass
+      - POSTGRES_DB=aroundhome
+#    volumes:
+#      - ./sql/master.sql:/docker-entrypoint-initdb.d/0000-master.sql
+
+  matcher:
+    image: matcher
+    ports:
+      - 8080:8080
+    environment:
+      - dbconn=postgres://postgres:pass@postgres/aroundhome?sslmode=disable
+      - bind=0.0.0.0:8080
+    build: .
