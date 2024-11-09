@@ -13,3 +13,8 @@ def before_all(context):
         print('===== Make sure you run the server: docker compose up')
         print()
         raise    
+
+def before_scenario(context, scenario):
+    with context.db.cursor() as cur:
+        cur.execute('delete from partner_skill')
+        cur.execute('delete from partner')

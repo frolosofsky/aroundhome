@@ -2,13 +2,14 @@ Feature: Customer communication with partners
 
   # Note, the city names are completely ignored by the test system. They are provided only for a reference.
   # Expected distance is calculated on https://latlongdata.com/distance-calculator/
+  # Coords are in the lat, long format.
   Background:
     Given partners:
       | name   | experience    | location           | city      | radius | rating |
-      | alice  | wood          | 52.52357, 13.38414 | Berlin    | 10     | 9      | 
-      | bob    | wood, carpet  | 52.40612, 12.55835 | Magdeburg | 200    | 8      |
-      | carlos | carpet        | 54.08988, 12.13590 | Rostok    | 100    | 8      |
-      | chad   | wood, tiles   | 51.33843, 12.38838 | Leipzig   | 80     | 2      |
+      | alice  | wood          | 52.52357, 13.38414 | Berlin    | 10 km  | 9      | 
+      | bob    | wood, carpet  | 52.40612, 12.55835 | Magdeburg | 200 km | 8      |
+      | carlos | carpet        | 54.08988, 12.13590 | Rostok    | 100 km | 8      |
+      | chad   | wood, tiles   | 51.33843, 12.38838 | Leipzig   | 80 km  | 2      |
 
   Scenario: Customer finds matching partners, results sorted by rating
     When a customer located in "Berlin" ("52.50950", "13.43997") searches someone experienced with "wood"

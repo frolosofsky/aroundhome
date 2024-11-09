@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/frolosofsky/aroundhome/cmd/matcher/api"
 	"github.com/frolosofsky/aroundhome/pkg/store/driver/pg"
 )
 
@@ -25,6 +26,10 @@ func main() {
 		die("failed to init database: %s\n", err)
 	}
 
+	svc := api.Service{
+		PartnerStore: store,
+	}
+
 	http.HandleFunc("/health", func(w http.ResponseWriter, _ *http.Request) {
 		if err := store.Health(); err != nil {
 			log.Printf("[E] Health failed: %s", err)
@@ -33,8 +38,9 @@ func main() {
 			w.WriteHeader(http.StatusOK)
 		}
 	})
+	http.HandleFunc("/match", svc.HandleMatch)
 
-	log.Printf("[I] HTTP server starts listening on %s", bind)
+	log.Printf("[info] HTTP server starts listening on %s", bind)
 	if err := http.ListenAndServe(bind, nil); err != nil {
 		die("server failed: %s\n", err)
 	}
