@@ -7,7 +7,7 @@ type Error struct {
 type PartnerMatchResult struct {
 	Id       string `json:"id"`
 	Name     string `json:"name"`
-	Rating   string `json:"rating"`
+	Rating   int    `json:"rating"`
 	Distance int    `json:"distance"`
 }
 

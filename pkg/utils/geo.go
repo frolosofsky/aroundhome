@@ -2,6 +2,7 @@ package utils
 
 import (
 	"errors"
+	"fmt"
 	"strconv"
 	"strings"
 
@@ -26,4 +27,8 @@ func ParsePosition(s string) (res model.Position, err error) {
 	}
 
 	return
+}
+
+func PositionToString(p model.Position) string {
+	return fmt.Sprintf("%.5f;%.5f", p.Latitude, p.Longitude)
 }

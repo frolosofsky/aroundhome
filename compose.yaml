@@ -9,6 +9,8 @@ services:
       - POSTGRES_DB=aroundhome
     volumes:
       - ./sql/master.sql:/docker-entrypoint-initdb.d/0000-master.sql
+    # uncomment to load the dump
+    # - ./sql/dump.sql://docker-entrypoint-initdb.d/0001-dump.sql
 
   matcher:
     image: matcher

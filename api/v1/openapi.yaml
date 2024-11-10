@@ -1,0 +1,143 @@
+openapi: 3.0.0
+info:
+  title: Aroundhome
+  contact:
+    email: frolosofsky@gmail.com
+  version: "1.0"
+servers:
+  - url: http://localhost:8080
+
+paths:
+  /partners/{id}:
+    get:
+      summary: Get Partner
+      operation: getPartner
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+            format: uuid
+          required: true
+          description: Id of the partner resource
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PartnerDetails'
+        '404':
+          description: not found
+          content:
+            text/plain:
+              schema:
+                type: string
+        '500':
+          description: internal server error
+          content:
+            text/plain:
+              schema:
+                type: string
+
+  /match:
+    get:
+      summary: Match Partner
+      operation: matchPartner
+      description: >-
+        Matches a customer with partners. Returns a lists of partners within their operational radius who have experience with a given
+        material. Results are sorted by rating descending and distance ascending.
+      parameters:
+        - in: query
+          name: material
+          schema:
+            type: string
+          required: true
+          description: Material the partner has experience with
+        - in: query
+          name: address
+          schema:
+            type: string
+          required: true
+          description: Customer address, in the `latitide;longitude` format
+          example: 54.08988;12.13590
+          
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MatchingPartners'
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: not found
+          content:
+            text/plain:
+              schema:
+                type: string
+        '500':
+          description: internal server error
+          content:
+            text/plain:
+              schema:
+                type: string
+
+components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+      required:
+       - message
+
+    PartnerDetails:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        rating:
+          type: integer
+        skills:
+          type: array
+          items:
+            type: string
+        address:
+          type: string
+          description: Partner address, in the `latitide;longitude` format
+          example: 54.08988;12.13590
+        radius:
+          type: integer
+          description: The radius the partner operates in, in meters.
+      required:
+        - id
+        - name
+        - rating
+        - skills
+        - address
+        - radius
+    
+    MatchingPartners:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: string
+            format: uuid
+          name:
+            type: string
+          rating:
+            type: integer
+          distance:
+            type: integer

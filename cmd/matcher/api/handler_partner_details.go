@@ -1,10 +1,11 @@
 package api
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 	"strings"
+
+	"github.com/frolosofsky/aroundhome/pkg/utils"
 )
 
 func (svc *Service) HandlePartnerDetails(w http.ResponseWriter, r *http.Request) {
@@ -35,7 +36,7 @@ func (svc *Service) HandlePartnerDetails(w http.ResponseWriter, r *http.Request)
 		Name:    partner.Name,
 		Rating:  partner.Rating,
 		Skills:  partner.Skills,
-		Address: fmt.Sprintf("%.5f,%.5f", partner.Position.Latitude, partner.Position.Longitude),
+		Address: utils.PositionToString(partner.Position),
 		Radius:  partner.Radius,
 	}
 

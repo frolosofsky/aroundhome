@@ -18,6 +18,6 @@ type PartnerMatchResult struct {
 	Id       string
 	Name     string
 	Position Position
-	Rating   string
+	Rating   int
 	Distance int
 }

@@ -27,7 +27,7 @@ def check_partners(context):
     assert len(j) == len(context.table.rows), f'{len(j)} != {len(context.table.rows)}'
     for i, row in enumerate(context.table):
         assert row['name'] == j[i]['name'], f'{row} != {j[i]}'
-        assert row['rating'] == j[i]['rating'], f'{row} != {j[i]}'
+        assert int(row['rating']) == j[i]['rating'], f'{row} != {j[i]}'
         assert abs(j[i]['distance'] - meters(row['distance'])) < 1000, f'{row} != {j[i]}'
 
 @then(u'they should receive an empty list of partners')
@@ -46,7 +46,7 @@ def step_impl(context):
     r = context.table.rows[0]
     assert j['name'] == r['name'], f'{j} != {r}'
     assert set(j['skills']) == set(r['experience'].split(', ')), f'{j} != {r}'
-    assert j['address'].split(',') == r['location'].split(', '), f'{j} != {r}'
+    assert j['address'].split(';') == r['location'].split(', '), f'{j} != {r}'
     assert j['radius'] == meters(r['radius']), f'{j} != {r}'
     assert j['rating'] == int(r['rating']), f'{j} != {r}'
 
