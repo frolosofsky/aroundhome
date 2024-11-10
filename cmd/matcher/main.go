@@ -39,6 +39,7 @@ func main() {
 		}
 	})
 	http.HandleFunc("/match", svc.HandleMatch)
+	http.HandleFunc("/partners/", svc.HandlePartnerDetails)
 
 	log.Printf("[info] HTTP server starts listening on %s", bind)
 	if err := http.ListenAndServe(bind, nil); err != nil {

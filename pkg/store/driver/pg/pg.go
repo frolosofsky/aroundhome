@@ -4,7 +4,7 @@ import (
 	"database/sql"
 
 	"github.com/frolosofsky/aroundhome/pkg/model"
-	_ "github.com/lib/pq"
+	"github.com/lib/pq"
 )
 
 type Driver struct {
@@ -57,7 +57,40 @@ order by
 		res = append(res, p)
 	}
 	if rows.Err() != nil {
-		return nil, err
+		return nil, rows.Err()
 	}
 	return res, nil
+}
+
+func (d *Driver) GetPartner(id string) (*model.Partner, error) {
+	q := `
+select
+  p.id,
+  p.name,
+  p.radius,
+  p.rating,
+  ST_X(p.geo::geometry), ST_Y(p.geo::geometry),
+  array_agg(s.code order by s.code)
+from partner p
+join partner_skill s on s.partner_id = p.id
+where p.id = $1
+group by p.id`
+
+	rows, err := d.db.Query(q, id)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	if !rows.Next() {
+		return nil, nil
+	}
+
+	var p model.Partner
+	if err := rows.Scan(&p.Id, &p.Name, &p.Radius, &p.Rating, &p.Position.Longitude, &p.Position.Latitude, pq.Array(&p.Skills)); err != nil {
+		return nil, err
+	}
+	if rows.Err() != nil {
+		return nil, rows.Err()
+	}
+	return &p, nil
 }

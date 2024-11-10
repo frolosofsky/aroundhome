@@ -13,3 +13,6 @@ class RestApi:
             'address': f'{lat};{long}'
         }
         return requests.get(self.endpoint + '/match', headers={'Content-Type': 'application/json'}, params=params)
+
+    def get_partner(self, id):
+        return requests.get(self.endpoint + f'/partners/{id}', headers={'Content-Type': 'application/json'})

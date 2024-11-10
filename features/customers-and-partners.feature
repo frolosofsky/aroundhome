@@ -30,10 +30,10 @@ Feature: Customer communication with partners
     Then they should receive an empty list of partners
 
   Scenario: Customer get details about a known partner
-    When a customer asks details about partner "alice"
+    When a customer asks details about partner "bob"
     Then they should receive parter details as such
     | name   | experience    | location           | city      | radius | rating |
-    | alice  | wood          | 52.52357, 13.38414 | Berlin    | 10     | 9      | 
+    | bob    | wood, carpet  | 52.40612, 12.55835 | Magdeburg | 200 km | 8      |
 
   Scenario: Customer doesn't receive details of unknown partner
     When a customer asks details about partner "craig"

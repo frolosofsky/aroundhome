@@ -37,7 +37,7 @@ func (svc *Service) HandleMatch(w http.ResponseWriter, r *http.Request) {
 	partners, err := svc.PartnerStore.MatchPartners(material, pos)
 	if err != nil {
 		log.Printf("[error] failed to match partners: %s", err)
-		writeResponse(w, http.StatusInternalServerError, nil)
+		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
